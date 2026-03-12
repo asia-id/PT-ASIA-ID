@@ -1179,6 +1179,36 @@
 
     /* panel mock animation */
     @keyframes ppmTick { 0%{opacity:1} 50%{opacity:.4} 100%{opacity:1} }
+
+    /* ══ BALASAN ADMIN (cek laporan) ══ */
+    .admin-reply-box {
+      margin-top: 10px;
+      background: rgba(212,168,83,0.06);
+      border: 1px solid rgba(212,168,83,0.25);
+      border-radius: 10px; padding: 11px 14px;
+    }
+    .admin-reply-header {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; color: var(--gold);
+      text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 7px;
+    }
+    .admin-reply-header::before {
+      content: ''; display: inline-block;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--gold); box-shadow: 0 0 6px rgba(212,168,83,0.6);
+    }
+    .admin-reply-text {
+      font-size: 13px; color: var(--text2); line-height: 1.65;
+    }
+    .admin-reply-time {
+      font-size: 10px; color: var(--text3); margin-top: 6px;
+    }
+    .no-reply-box {
+      display: flex; align-items: center; gap: 7px;
+      margin-top: 10px; padding: 9px 13px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 9px; font-size: 12px; color: var(--text3);
+    }
   </style>
 </head>
 <body>
@@ -1948,6 +1978,18 @@
       html +=   timelineStep(st);
       if (r.detail) {
         html += '<div class="cek-card-detail"><strong style="color:var(--text2)">Catatan kamu:</strong> ' + esc(r.detail) + '</div>';
+      }
+      // Admin reply
+      if (r.balasan) {
+        html += '<div class="admin-reply-box">';
+        html += '<div class="admin-reply-header">Balasan Admin</div>';
+        html += '<div class="admin-reply-text">' + esc(r.balasan) + '</div>';
+        if (r.waktuBalasan) {
+          html += '<div class="admin-reply-time">&#128337; ' + esc(r.waktuBalasan) + '</div>';
+        }
+        html += '</div>';
+      } else {
+        html += '<div class="no-reply-box">&#8987; Menunggu balasan admin...</div>';
       }
       html += '</div>';
     });
