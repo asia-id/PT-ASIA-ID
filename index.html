@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bot Spaceman Shop</title>
+  <title>SpaceMan Store</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -1209,6 +1209,31 @@
       background: var(--bg3); border: 1px solid var(--border);
       border-radius: 9px; font-size: 12px; color: var(--text3);
     }
+
+    /* ══ BANTUAN ACTION BUTTONS ══ */
+    .bantuan-action-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      margin-top: 4px;
+    }
+    .bantuan-btn {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px 14px;
+      cursor: pointer; text-align: left; transition: all .18s;
+      font-family: 'DM Sans', sans-serif; width: 100%;
+    }
+    .bantuan-btn:hover { border-color: var(--border2); transform: translateY(-1px); }
+    .bantuan-btn-lapor:hover { border-color: rgba(248,113,113,0.35); background: rgba(248,113,113,0.04); }
+    .bantuan-btn-cs:hover    { border-color: rgba(74,222,128,0.35);  background: rgba(74,222,128,0.04); }
+    .bantuan-btn-icon { font-size: 26px; flex-shrink: 0; }
+    .bantuan-btn-title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+    .bantuan-btn-sub   { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 5px; }
+    .cs-dot {
+      display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green); box-shadow: 0 0 5px rgba(74,222,128,0.7);
+      animation: csBlink 1.8s ease-in-out infinite;
+    }
+    @keyframes csBlink { 0%,100%{opacity:1} 50%{opacity:.35} }
   </style>
 </head>
 <body>
@@ -1605,12 +1630,21 @@
         <div class="faq-a">Spaceman Predictor Apk mendukung Android 6.0 ke atas. Untuk versi Telegram, cukup memiliki akun Telegram aktif di perangkat apapun.</div>
       </div>
 
-      <div class="contact-card fi">
-        <div class="contact-icon">💬</div>
-        <div>
-          <div class="contact-lbl">Butuh bantuan lebih lanjut?</div>
-          <div class="contact-val">Hubungi CS kami — aktif 24/7</div>
-        </div>
+      <div class="bantuan-action-row fi">
+        <button class="bantuan-btn bantuan-btn-lapor" onclick="openModal()">
+          <span class="bantuan-btn-icon">⚠️</span>
+          <div>
+            <div class="bantuan-btn-title">Buat Laporan</div>
+            <div class="bantuan-btn-sub">Laporkan masalah pesanan kamu</div>
+          </div>
+        </button>
+        <button class="bantuan-btn bantuan-btn-cs" onclick="openCekModal()">
+          <span class="bantuan-btn-icon">💬</span>
+          <div>
+            <div class="bantuan-btn-title">CS Admin</div>
+            <div class="bantuan-btn-sub"><span class="cs-dot"></span>Aktif 24 jam</div>
+          </div>
+        </button>
       </div>
     </div>
   </div>
@@ -2356,4 +2390,3 @@ function cekBayar() {
 
 </body>
 </html>
-
