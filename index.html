@@ -1234,6 +1234,162 @@
       animation: csBlink 1.8s ease-in-out infinite;
     }
     @keyframes csBlink { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+    /* ══ KODE PEMBAYARAN ══ */
+    .kode-bayar-wrap {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg3); border: 1px dashed var(--border2);
+      border-radius: 8px; padding: 7px 10px; margin: 8px 0;
+    }
+    .kode-bayar-label { font-size: 10px; color: var(--text3); white-space: nowrap; }
+    .kode-bayar-val   { font-size: 13px; font-weight: 700; color: var(--white); font-family: monospace; flex: 1; letter-spacing: 0.5px; }
+    .kode-bayar-copy  {
+      background: var(--bg4); border: 1px solid var(--border2);
+      color: var(--text2); padding: 4px 9px; border-radius: 6px;
+      font-size: 11px; font-weight: 600; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; transition: all .15s; white-space: nowrap;
+    }
+    .kode-bayar-copy:hover { background: var(--border2); color: var(--text); }
+    .kode-bayar-copy.copied { background: rgba(74,222,128,0.15); color: var(--green); border-color: rgba(74,222,128,0.3); }
+
+    /* ══ TOMBOL SUDAH BAYAR ══ */
+    .btn-sudah-bayar {
+      width: 100%; padding: 10px; margin-top: 6px;
+      background: transparent; border: 1px solid var(--border2);
+      color: var(--text3); border-radius: 10px; font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 600; cursor: pointer; transition: all .18s;
+    }
+    .btn-sudah-bayar:hover { border-color: var(--green); color: var(--green); background: rgba(74,222,128,0.06); }
+
+    /* ══ KERANJANG FAB ══ */
+    .cart-fab {
+      position: fixed; bottom: 80px; right: 20px; z-index: 150;
+      background: var(--gold); color: var(--bg);
+      border: none; border-radius: 50px; padding: 12px 18px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
+      cursor: pointer; box-shadow: 0 4px 20px rgba(212,168,83,0.4);
+      display: flex; align-items: center; gap: 8px;
+      transition: all .2s; opacity: 0; pointer-events: none;
+    }
+    .cart-fab.visible { opacity: 1; pointer-events: all; }
+    .cart-fab:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(212,168,83,0.5); }
+    .cart-count {
+      background: var(--bg); color: var(--gold);
+      width: 20px; height: 20px; border-radius: 50%;
+      font-size: 11px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ══ MODAL KERANJANG ══ */
+    .cart-overlay {
+      display: none; position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+      align-items: flex-end; justify-content: center;
+    }
+    .cart-overlay.open { display: flex; }
+    .cart-sheet {
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: 20px 20px 0 0; width: 100%; max-width: 620px;
+      max-height: 80vh; display: flex; flex-direction: column;
+      animation: slideUp .25s ease;
+    }
+    .cart-handle { width: 40px; height: 4px; border-radius: 4px; background: var(--border2); margin: 12px auto; flex-shrink: 0; }
+    .cart-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .cart-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--white); }
+    .cart-close { width: 28px; height: 28px; border-radius: 7px; background: var(--bg3); border: 1px solid var(--border); color: var(--text2); cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+    .cart-body { overflow-y: auto; flex: 1; padding: 16px 20px; }
+    .cart-item {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 11px; padding: 12px 14px; margin-bottom: 8px;
+    }
+    .cart-item-icon { font-size: 22px; flex-shrink: 0; }
+    .cart-item-info { flex: 1; }
+    .cart-item-name  { font-size: 13px; font-weight: 600; color: var(--white); }
+    .cart-item-price { font-size: 12px; color: var(--text3); margin-top: 2px; }
+    .cart-item-kode  { font-size: 10px; color: var(--text3); font-family: monospace; margin-top: 3px; }
+    .cart-item-del { background: transparent; border: none; color: var(--text3); cursor: pointer; font-size: 16px; padding: 4px; transition: color .15s; }
+    .cart-item-del:hover { color: var(--red); }
+    .cart-empty { text-align: center; padding: 32px; color: var(--text3); font-size: 13px; }
+    .cart-empty-icon { font-size: 36px; margin-bottom: 10px; }
+    .cart-footer {
+      padding: 14px 20px 24px; border-top: 1px solid var(--border); flex-shrink: 0;
+    }
+    .cart-total-row {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px;
+    }
+    .cart-total-lbl { font-size: 13px; color: var(--text3); }
+    .cart-total-val { font-size: 18px; font-weight: 800; color: var(--white); }
+    .cart-order-btn {
+      width: 100%; padding: 13px;
+      background: var(--white); color: var(--bg);
+      border: none; border-radius: 11px;
+      font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: all .18s;
+    }
+    .cart-order-btn:hover { background: var(--accent); }
+    .cart-order-btn:disabled { opacity: 0.4; cursor: default; }
+
+    /* ══ MODAL LAPORAN — TAB SYSTEM ══ */
+    .laporan-tabs {
+      display: flex; gap: 4px; margin-bottom: 18px;
+      background: var(--bg3); border-radius: 10px; padding: 4px;
+    }
+    .laporan-tab {
+      flex: 1; padding: 8px; border-radius: 7px; border: none;
+      background: transparent; color: var(--text3);
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all .18s; text-align: center;
+    }
+    .laporan-tab.active { background: var(--bg2); color: var(--white); box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+    .laporan-tab-panel { display: none; }
+    .laporan-tab-panel.active { display: block; }
+
+    /* pembayaran form highlight */
+    .kode-display-box {
+      background: rgba(212,168,83,0.06); border: 1px solid rgba(212,168,83,0.25);
+      border-radius: 9px; padding: 11px 14px; margin-bottom: 14px;
+    }
+    .kode-display-lbl { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; }
+    .kode-display-val { font-size: 16px; font-weight: 800; color: var(--gold); font-family: monospace; letter-spacing: 1px; }
+
+    /* ══ QRIS KODE PEMBAYARAN ══ */
+    .qris-kode-box {
+      background: rgba(212,168,83,0.06);
+      border: 1px solid rgba(212,168,83,0.3);
+      border-radius: 12px; padding: 14px 16px;
+      margin: 14px 0;
+    }
+    .qris-kode-top {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 10px; gap: 8px; flex-wrap: wrap;
+    }
+    .qris-kode-lbl  { font-size: 12px; font-weight: 700; color: var(--gold); }
+    .qris-kode-hint { font-size: 10px; color: var(--text3); }
+    .qris-kode-row  { display: flex; align-items: center; gap: 10px; }
+    .qris-kode-val  {
+      flex: 1; font-size: 20px; font-weight: 800; font-family: monospace;
+      color: var(--gold); letter-spacing: 1.5px;
+    }
+    .qris-kode-copy {
+      background: rgba(212,168,83,0.15); border: 1px solid rgba(212,168,83,0.35);
+      color: var(--gold); padding: 7px 14px; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700;
+      cursor: pointer; transition: all .18s; white-space: nowrap;
+    }
+    .qris-kode-copy:hover { background: rgba(212,168,83,0.25); }
+    .qris-kode-copy.copied { background: rgba(74,222,128,0.15); color: var(--green); border-color: rgba(74,222,128,0.3); }
+
+    .pay-btn-sudah {
+      background: rgba(74,222,128,0.1) !important;
+      color: var(--green) !important;
+      border: 1px solid rgba(74,222,128,0.3) !important;
+    }
+    .pay-btn-sudah:hover { background: rgba(74,222,128,0.18) !important; }
   </style>
 </head>
 <body>
@@ -1375,8 +1531,12 @@
             <span class="stock-badge s-in" id="badge-apk">● Tersedia</span>
           </div>
           <div id="status-apk"></div>
-          <button class="btn-buy" id="btn-apk"
-            onclick="goToQRIS('Spaceman Predictor Apk','Rp100.000',['Spaceman Predictor Apk — 1 lisensi'])">⚡ Beli Sekarang</button>
+          <div style="display:flex;gap:6px;">
+            <button class="btn-buy" id="btn-apk" style="flex:1;"
+              onclick="goToQRIS('Spaceman Predictor Apk','Rp100.000',['Spaceman Predictor Apk — 1 lisensi'],'apk')">⚡ Beli</button>
+            <button class="btn-buy" style="flex:0 0 42px;padding:0;font-size:18px;" title="Tambah ke Keranjang"
+              onclick="addToCart('apk','Spaceman Predictor Apk','Rp100.000',100000)">🛒</button>
+          </div>
         </div>
       </div>
 
@@ -1445,8 +1605,12 @@
             <span class="stock-badge s-in" id="badge-panel">● Tersedia</span>
           </div>
           <div id="status-panel"></div>
-          <button class="btn-buy btn-buy-blue" id="btn-panel"
-            onclick="goToQRIS('Panel Predictor Spaceman','Rp500.000',['Panel Predictor Spaceman — 1 lisensi seumur hidup'])">⚡ Beli Sekarang</button>
+          <div style="display:flex;gap:6px;">
+            <button class="btn-buy btn-buy-blue" id="btn-panel" style="flex:1;"
+              onclick="goToQRIS('Panel Predictor Spaceman','Rp500.000',['Panel Predictor Spaceman — 1 lisensi seumur hidup'],'panel')">⚡ Beli</button>
+            <button class="btn-buy btn-buy-blue" style="flex:0 0 42px;padding:0;font-size:18px;" title="Tambah ke Keranjang"
+              onclick="addToCart('panel','Panel Predictor Spaceman','Rp500.000',500000)">🛒</button>
+          </div>
         </div>
       </div>
 
@@ -1484,8 +1648,12 @@
             <span class="stock-badge s-in" id="badge-spesial">● Tersedia</span>
           </div>
           <div id="status-spesial"></div>
-          <button class="btn-buy btn-buy-gold" id="btn-spesial"
-            onclick="goToQRIS('Produk Spesial Reseller','Rp700.000',['Semua Produk (APK + Telegram + Panel)','Tutorial Lengkap + Materi Promosi','Hak Jual Kembali','Koneksi Langsung ke Admin'])">👑 Beli Paket Spesial</button>
+          <div style="display:flex;gap:6px;">
+            <button class="btn-buy btn-buy-gold" id="btn-spesial" style="flex:1;"
+              onclick="goToQRIS('Produk Spesial Reseller','Rp700.000',['Semua Produk (APK + Telegram + Panel)','Tutorial Lengkap + Materi Promosi','Hak Jual Kembali','Koneksi Langsung ke Admin'],'spesial')">👑 Beli Spesial</button>
+            <button class="btn-buy btn-buy-gold" style="flex:0 0 42px;padding:0;font-size:18px;" title="Tambah ke Keranjang"
+              onclick="addToCart('spesial','Produk Spesial Reseller','Rp700.000',700000)">🛒</button>
+          </div>
         </div>
       </div>
 
@@ -1566,11 +1734,14 @@
           </div>
           <div id="status-bundling"></div>
         </div>
-
-        <button class="btn-buy bundling-buy-btn" id="btn-bundling"
-          onclick="goToQRIS('Bundling APK + Telegram','Rp130.000',['Spaceman Predictor Apk — 1 lisensi','Spaceman Predictor Telegram — 1 bulan'])">
-          ⚡ Beli Bundling Sekarang
-        </button>
+          <div style="display:flex;gap:6px;">
+          <button class="btn-buy bundling-buy-btn" id="btn-bundling" style="flex:1;"
+            onclick="goToQRIS('Bundling APK + Telegram','Rp130.000',['Spaceman Predictor Apk — 1 lisensi','Spaceman Predictor Telegram — 1 bulan'],'bundling')">
+            ⚡ Beli Bundling
+          </button>
+          <button class="btn-buy bundling-buy-btn" style="flex:0 0 42px;padding:0;font-size:18px;" title="Tambah ke Keranjang"
+            onclick="addToCart('bundling','Bundling APK + Telegram','Rp130.000',130000)">🛒</button>
+        </div>
       </div>
 
       <!-- Why Bundling -->
@@ -1666,41 +1837,87 @@
 <div class="modal-overlay" id="modalLaporan" onclick="handleOverlayClick(event)">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-title">Laporkan Produk</div>
-    <div class="modal-sub">Isi formulir di bawah agar tim kami dapat menindaklanjuti laporan kamu dengan cepat.</div>
+    <div class="modal-title">Laporkan</div>
 
-    <div class="form-group">
-      <label class="form-label">Nama Lengkap *</label>
-      <input class="form-input" id="l-nama" type="text" placeholder="Masukkan nama kamu"/>
-      <div class="field-err" id="err-nama">Nama wajib diisi.</div>
+    <!-- Tabs -->
+    <div class="laporan-tabs">
+      <button class="laporan-tab active" id="ltab-umum" onclick="switchLaporanTab('umum')">📋 Produk / Umum</button>
+      <button class="laporan-tab" id="ltab-bayar" onclick="switchLaporanTab('bayar')">💳 Konfirmasi Bayar</button>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">Nomor / Email (untuk dihubungi) *</label>
-      <input class="form-input" id="l-kontak" type="text" placeholder="No. WhatsApp atau email kamu"/>
-      <div class="field-err" id="err-kontak">Nomor/email wajib diisi agar admin bisa menghubungi kamu.</div>
+    <!-- Panel: Umum -->
+    <div class="laporan-tab-panel active" id="lpanel-umum">
+      <div class="modal-sub" style="margin-bottom:14px;">Isi formulir di bawah agar tim kami dapat menindaklanjuti laporan kamu dengan cepat.</div>
+      <div class="form-group">
+        <label class="form-label">Nama Lengkap *</label>
+        <input class="form-input" id="l-nama" type="text" placeholder="Masukkan nama kamu"/>
+        <div class="field-err" id="err-nama">Nama wajib diisi.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nomor / Email (untuk dihubungi) *</label>
+        <input class="form-input" id="l-kontak" type="text" placeholder="No. WhatsApp atau email kamu"/>
+        <div class="field-err" id="err-kontak">Nomor/email wajib diisi agar admin bisa menghubungi kamu.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Alasan Laporan *</label>
+        <select class="form-select" id="l-alasan">
+          <option value="">— Pilih alasan —</option>
+          <option value="Produk tidak sesuai">Produk tidak sesuai</option>
+          <option value="Penipuan / Scam">Penipuan / Scam</option>
+          <option value="Pelanggaran hak cipta">Pelanggaran hak cipta</option>
+          <option value="Konten berbahaya">Konten berbahaya</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+        <div class="field-err" id="err-alasan">Pilih alasan laporan.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Keterangan Tambahan</label>
+        <textarea class="form-textarea" id="l-detail" placeholder="Jelaskan masalah secara singkat (opsional)..."></textarea>
+      </div>
+      <div class="form-note" style="margin-bottom:14px;">* Wajib diisi. Laporan diproses dalam 1×24 jam.</div>
+      <button class="btn-submit" id="btnKirimLaporan" onclick="kirimLaporan()">Kirim Laporan</button>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">Alasan Laporan *</label>
-      <select class="form-select" id="l-alasan">
-        <option value="">— Pilih alasan —</option>
-        <option value="Produk tidak sesuai">Produk tidak sesuai</option>
-        <option value="Penipuan / Scam">Penipuan / Scam</option>
-        <option value="Pelanggaran hak cipta">Pelanggaran hak cipta</option>
-        <option value="Konten berbahaya">Konten berbahaya</option>
-        <option value="Lainnya">Lainnya</option>
-      </select>
-      <div class="field-err" id="err-alasan">Pilih alasan laporan.</div>
-    </div>
+    <!-- Panel: Konfirmasi Bayar -->
+    <div class="laporan-tab-panel" id="lpanel-bayar">
+      <div class="modal-sub" style="margin-bottom:14px;">Sudah bayar? Isi form ini agar admin segera mengkonfirmasi pembayaran kamu.</div>
 
-    <div class="form-group">
-      <label class="form-label">Keterangan Tambahan</label>
-      <textarea class="form-textarea" id="l-detail" placeholder="Jelaskan masalah secara singkat (opsional)..."></textarea>
-    </div>
+      <!-- Kode terpilih -->
+      <div class="kode-display-box" id="kode-display-box">
+        <div class="kode-display-lbl">Kode Pembayaran Produk</div>
+        <div class="kode-display-val" id="kode-display-val">—</div>
+      </div>
 
-    <div class="form-note" style="margin-bottom:14px;">* Wajib diisi. Laporan diproses dalam 1×24 jam.</div>
-    <button class="btn-submit" id="btnKirimLaporan" onclick="kirimLaporan()">Kirim Laporan</button>
+      <div class="form-group">
+        <label class="form-label">Nama Lengkap *</label>
+        <input class="form-input" id="b-nama" type="text" placeholder="Masukkan nama kamu"/>
+        <div class="field-err" id="berr-nama">Nama wajib diisi.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nomor / Email *</label>
+        <input class="form-input" id="b-kontak" type="text" placeholder="No. WhatsApp atau email kamu"/>
+        <div class="field-err" id="berr-kontak">Nomor/email wajib diisi.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Produk yang dibeli *</label>
+        <input class="form-input" id="b-produk" type="text" placeholder="Nama produk" readonly style="background:var(--bg3);"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Kode Pembayaran *</label>
+        <input class="form-input" id="b-kode" type="text" placeholder="Kode otomatis dari produk" readonly style="background:var(--bg3);font-family:monospace;font-weight:700;color:var(--gold);"/>
+        <div class="field-err" id="berr-kode">Kode pembayaran tidak ditemukan.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nominal Transfer</label>
+        <input class="form-input" id="b-nominal" type="text" placeholder="Contoh: Rp100.000"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Keterangan Tambahan</label>
+        <textarea class="form-textarea" id="b-detail" placeholder="Contoh: bukti transfer ada di WA, dll (opsional)..."></textarea>
+      </div>
+      <div class="form-note" style="margin-bottom:14px;">* Wajib diisi. Konfirmasi diproses dalam 1×24 jam.</div>
+      <button class="btn-submit" id="btnKirimBayar" onclick="kirimLaporanBayar()">💳 Kirim Konfirmasi Bayar</button>
+    </div>
   </div>
 </div>
 
@@ -1749,6 +1966,17 @@
         <div class="o-row"><span class="o-label">Metode Bayar</span><span class="o-val">QRIS</span></div>
         <div class="o-row o-total"><span class="o-label">Total Bayar</span><span class="o-val" id="sumPrice">—</span></div>
       </div>
+      <!-- Kode Pembayaran -->
+      <div class="qris-kode-box">
+        <div class="qris-kode-top">
+          <span class="qris-kode-lbl">&#128273; Kode Pembayaran</span>
+          <span class="qris-kode-hint">Simpan kode ini &mdash; perlu saat konfirmasi bayar</span>
+        </div>
+        <div class="qris-kode-row">
+          <span class="qris-kode-val" id="qrisKodeVal">—</span>
+          <button class="qris-kode-copy" id="qrisKodeCopyBtn" onclick="copyQrisKode()">Salin</button>
+        </div>
+      </div>
 
       <!-- Loading -->
       <div id="payLoading" class="load-wrap">
@@ -1759,8 +1987,9 @@
       <!-- QRIS -->
       <div id="qrisSection" class="qris-section hidden">
         <div class="qris-frame">
-          <img src="qris.jpg" alt="QRIS Pembayaran"
-            onerror="this.outerHTML='<div style=\'width:190px;height:190px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;border-radius:6px;\'><span style=\'font-size:48px\'>🔲</span><small style=\'color:#333;font-family:sans-serif\'>qris.jpg</small></div>'"/>
+          <img id="qrisImg" src="" alt="QRIS Pembayaran"
+            style="width:190px;height:190px;object-fit:contain;display:block;border-radius:6px;"
+            onerror="this.onerror=null;this.src='';this.alt='File: '+this.getAttribute('data-filename');"/>
         </div>
 
         <!-- Timer -->
@@ -1790,7 +2019,7 @@
 
       <!-- Buttons -->
       <button class="pay-btn pay-btn-secondary" id="btnShowQris" onclick="reloadQris()">🔄 Tampilkan QRIS Lagi</button>
-      <button class="pay-btn pay-btn-primary" onclick="cekBayar()">🔍 Cek Status Pembayaran</button>
+      <button class="pay-btn pay-btn-sudah" onclick="openLaporanBayarFromQRIS()">✓ Sudah Bayar — Konfirmasi</button>
       <button class="pay-btn pay-btn-ghost" onclick="kembali()">← Kembali ke Toko</button>
 
       <div class="pay-support">Butuh bantuan? <a href="#">Hubungi CS kami</a></div>
@@ -1909,6 +2138,16 @@
       banner.innerHTML = '';
     }
   }
+
+  /* ── Kirim Laporan Bayar ── */
+  window.kirimBayarFirebase = async function(data) {
+    await push(ref(db, 'laporan_bayar'), {
+      ...data,
+      status: 'Menunggu Konfirmasi',
+      waktu: new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }),
+      timestamp: Date.now()
+    });
+  };
 
   /* ── Cek Laporan: query Firebase ── */
   window.openCekModal = function() {
@@ -2198,6 +2437,193 @@ function handleLegalOverlay(e) {
   if (e.target === document.getElementById('legalOverlay')) closeLegal();
 }
 
+/* ─── KODE PEMBAYARAN ─── */
+const PRODUK_PREFIXES = { apk:'APK', bundling:'BDL', panel:'PNL', spesial:'SPC' };
+
+function getOrCreateKode(produkId) {
+  const key = 'kode_bayar_' + produkId;
+  let kode = localStorage.getItem(key);
+  if (!kode) {
+    const pre  = PRODUK_PREFIXES[produkId] || 'PRD';
+    const rand = Math.random().toString(36).substring(2,7).toUpperCase();
+    const ts   = Date.now().toString(36).slice(-4).toUpperCase();
+    kode = pre + '-' + rand + ts;
+    localStorage.setItem(key, kode);
+  }
+  return kode;
+}
+
+function initKodeBayar() {
+  Object.keys(PRODUK_PREFIXES).forEach(id => {
+    const kode = getOrCreateKode(id);
+    const el = document.getElementById('kode-' + id);
+    if (el) el.textContent = kode;
+  });
+}
+// init on load
+document.addEventListener('DOMContentLoaded', initKodeBayar);
+setTimeout(initKodeBayar, 100);
+
+function copyKode(produkId) {
+  const kode = getOrCreateKode(produkId);
+  navigator.clipboard.writeText(kode).catch(() => {});
+  const btns = document.querySelectorAll('[onclick="copyKode(\'' + produkId + '\')"]');
+  btns.forEach(btn => {
+    btn.textContent = 'Tersalin!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Salin'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+/* ─── KERANJANG ─── */
+let cart = [];
+
+function addToCart(id, nama, hargaStr, hargaNum) {
+  if (cart.find(x => x.id === id)) {
+    showToastMsg('⚠ ' + nama + ' sudah ada di keranjang');
+    return;
+  }
+  cart.push({ id, nama, hargaStr, hargaNum, kode: getOrCreateKode(id) });
+  updateCartUI();
+  showToastMsg('✓ ' + nama + ' ditambahkan ke keranjang');
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(x => x.id !== id);
+  updateCartUI();
+  renderCartBody();
+}
+
+function updateCartUI() {
+  const count = cart.length;
+  const fab = document.getElementById('cartFab');
+  const cnt = document.getElementById('cartFabCount');
+  if (fab) fab.classList.toggle('visible', count > 0);
+  if (cnt) cnt.textContent = count;
+}
+
+function openCart() {
+  renderCartBody();
+  document.getElementById('cartOverlay').classList.add('open');
+}
+function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); }
+function handleCartOverlay(e) { if (e.target === document.getElementById('cartOverlay')) closeCart(); }
+
+function renderCartBody() {
+  const body = document.getElementById('cartBody');
+  const orderBtn = document.getElementById('cartOrderBtn');
+  const totalEl  = document.getElementById('cartTotal');
+  const icons = { apk:'🤖', bundling:'📦', panel:'🖥', spesial:'👑' };
+  if (cart.length === 0) {
+    body.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🛒</div><div>Keranjang kosong</div></div>';
+    if (orderBtn) orderBtn.disabled = true;
+    if (totalEl) totalEl.textContent = 'Rp0';
+    return;
+  }
+  let total = 0;
+  body.innerHTML = cart.map(item => {
+    total += item.hargaNum;
+    return `<div class="cart-item">
+      <div class="cart-item-icon">${icons[item.id] || '📦'}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.nama}</div>
+        <div class="cart-item-price">${item.hargaStr}</div>
+        <div class="cart-item-kode">Kode: ${item.kode}</div>
+      </div>
+      <button class="cart-item-del" onclick="removeFromCart('${item.id}')" title="Hapus">✕</button>
+    </div>`;
+  }).join('');
+  if (orderBtn) orderBtn.disabled = false;
+  if (totalEl)  totalEl.textContent = 'Rp' + total.toLocaleString('id-ID');
+}
+
+function orderKeranjang() {
+  if (cart.length === 0) return;
+  const items   = cart.map(x => x.nama + ' — ' + x.hargaStr);
+  const namaGab = cart.length > 1 ? 'Keranjang (' + cart.length + ' produk)' : cart[0].nama;
+  const total   = 'Rp' + cart.reduce((s,x) => s + x.hargaNum, 0).toLocaleString('id-ID');
+  closeCart();
+  goToQRIS(namaGab, total, items);
+}
+
+function showToastMsg(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(window._toastT);
+  window._toastT = setTimeout(() => { t.style.display = 'none'; }, 2800);
+}
+
+/* ─── LAPORAN TABS ─── */
+function switchLaporanTab(tab) {
+  ['umum','bayar'].forEach(t => {
+    document.getElementById('ltab-' + t).classList.toggle('active', t === tab);
+    document.getElementById('lpanel-' + t).classList.toggle('active', t === tab);
+  });
+}
+
+/* ─── SUDAH BAYAR — buka laporan pembayaran ─── */
+function openLaporanBayar(produkId, produkNama) {
+  const kode = getOrCreateKode(produkId);
+  _openBayarModal(produkNama, kode);
+}
+
+function openLaporanBayarFromQRIS() {
+  // ambil kode & nama produk dari sesi QRIS aktif
+  const kode  = window._currentQrisKode   || '—';
+  const nama  = window._currentQrisProduk || '—';
+  _openBayarModal(nama, kode);
+}
+
+function _openBayarModal(produkNama, kode) {
+  // Kembali ke toko dulu jika sedang di QRIS
+  if (!document.getElementById('halamanToko').classList.contains('hidden') === false) {
+    kembali();
+  }
+  document.getElementById('modalLaporan').classList.add('open');
+  switchLaporanTab('bayar');
+  document.getElementById('b-produk').value = produkNama;
+  document.getElementById('b-kode').value   = kode;
+  const dispVal = document.getElementById('kode-display-val');
+  if (dispVal) dispVal.textContent = kode;
+}
+
+/* ─── KIRIM LAPORAN PEMBAYARAN ─── */
+async function kirimLaporanBayar() {
+  const nama    = document.getElementById('b-nama').value.trim();
+  const kontak  = document.getElementById('b-kontak').value.trim();
+  const produk  = document.getElementById('b-produk').value.trim();
+  const kode    = document.getElementById('b-kode').value.trim();
+  const nominal = document.getElementById('b-nominal').value.trim();
+  const detail  = document.getElementById('b-detail').value.trim();
+
+  let ok = true;
+  ['berr-nama','berr-kontak','berr-kode'].forEach(id => { document.getElementById(id).style.display = 'none'; });
+  if (!nama)   { document.getElementById('berr-nama').style.display = 'block';   ok = false; }
+  if (!kontak) { document.getElementById('berr-kontak').style.display = 'block'; ok = false; }
+  if (!kode)   { document.getElementById('berr-kode').style.display = 'block';   ok = false; }
+  if (!ok) return;
+
+  const btn = document.getElementById('btnKirimBayar');
+  btn.disabled = true; btn.textContent = 'Mengirim…';
+
+  try {
+    if (typeof window.kirimBayarFirebase === 'function') {
+      await window.kirimBayarFirebase({ nama, kontak, produk, kode, nominal, detail });
+    }
+    // Reset
+    ['b-nama','b-kontak','b-nominal','b-detail'].forEach(id => { document.getElementById(id).value = ''; });
+    document.getElementById('modalLaporan').classList.remove('open');
+    showToastMsg('✅ Konfirmasi bayar terkirim!');
+  } catch(e) {
+    console.error(e);
+    alert('Gagal mengirim. Coba lagi.');
+  } finally {
+    btn.disabled = false; btn.textContent = '💳 Kirim Konfirmasi Bayar';
+  }
+}
+
 /* ─── PANEL MOCK ANIMATION ─── */
 (function animatePanelPreview() {
   const vals = ['2.14×','8.42×','3.76×','12.01×','1.98×','5.50×','7.23×','4.11×'];
@@ -2297,7 +2723,7 @@ function kirimLaporan() {
 /* ─── QRIS LOGIC ─── */
 let countdown, timeLeft = 120;
 
-function goToQRIS(nama, harga, items) {
+function goToQRIS(nama, harga, items, produkId) {
   document.getElementById('halamanToko').classList.add('hidden');
   document.getElementById('halamanQRIS').classList.remove('hidden');
   document.getElementById('sumProd').textContent  = nama  || '—';
@@ -2313,6 +2739,33 @@ function goToQRIS(nama, harga, items) {
       wrap.innerHTML = '';
     }
   }
+  // Ganti foto QRIS sesuai produk
+  const QRIS_MAP = {
+    'apk'      : 'QRIS 100K.gif',
+    'bundling' : 'QRIS 130K.gif',
+    'panel'    : 'QRIS 500K.gif',
+    'spesial'  : 'QRIS 700K.gif'
+  };
+  const qrisImg = document.getElementById('qrisImg');
+  if (qrisImg) {
+    const filename = QRIS_MAP[produkId] || 'QRIS 100K.jpg';
+    qrisImg.setAttribute('data-filename', filename);
+    qrisImg.src = filename;
+  }
+
+  // Kode pembayaran — unik per produk per user
+  const kode = produkId ? getOrCreateKode(produkId) : generateTempKode(nama);
+  window._currentQrisKode    = kode;
+  window._currentQrisProduk  = nama;
+  window._currentQrisProdukId = produkId || null;
+  const kodeEl = document.getElementById('qrisKodeVal');
+  if (kodeEl) kodeEl.textContent = kode;
+  // Also pre-fill sudah bayar form if open
+  const bkode = document.getElementById('b-kode');
+  const bprod = document.getElementById('b-produk');
+  if (bkode) bkode.value = kode;
+  if (bprod) bprod.value = nama;
+
   document.getElementById('payLoading').classList.remove('hidden');
   document.getElementById('qrisSection').classList.add('hidden');
   document.getElementById('notifErr').style.display = 'none';
@@ -2320,6 +2773,25 @@ function goToQRIS(nama, harga, items) {
   document.getElementById('btnShowQris').disabled = false;
   window.scrollTo(0, 0);
   setTimeout(showQris, 2000);
+}
+
+function generateTempKode(nama) {
+  // untuk keranjang / gabungan — generate kode sementara
+  const pre  = 'KRT';
+  const rand = Math.random().toString(36).substring(2,7).toUpperCase();
+  return pre + '-' + rand;
+}
+
+function copyQrisKode() {
+  const kode = window._currentQrisKode || '';
+  if (!kode) return;
+  navigator.clipboard.writeText(kode).catch(() => {});
+  const btn = document.getElementById('qrisKodeCopyBtn');
+  if (btn) {
+    btn.textContent = 'Tersalin!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Salin'; btn.classList.remove('copied'); }, 2000);
+  }
 }
 
 function showQris() {
@@ -2387,6 +2859,33 @@ function cekBayar() {
     <div class="legal-sheet-body" id="legalBody"></div>
   </div>
 </div>
+
+
+<!-- ════════════════════════════════════
+     MODAL KERANJANG
+════════════════════════════════════ -->
+<div class="cart-overlay" id="cartOverlay" onclick="handleCartOverlay(event)">
+  <div class="cart-sheet">
+    <div class="cart-handle"></div>
+    <div class="cart-header">
+      <div class="cart-title">🛒 Keranjang</div>
+      <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-body" id="cartBody"></div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span class="cart-total-lbl">Total</span>
+        <span class="cart-total-val" id="cartTotal">Rp0</span>
+      </div>
+      <button class="cart-order-btn" id="cartOrderBtn" onclick="orderKeranjang()">⚡ Order Semua</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cart FAB -->
+<button class="cart-fab" id="cartFab" onclick="openCart()">
+  🛒 Keranjang <span class="cart-count" id="cartFabCount">0</span>
+</button>
 
 </body>
 </html>
