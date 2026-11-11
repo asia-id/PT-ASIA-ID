@@ -91,7 +91,7 @@ h2::before{content:'';display:block;width:34px;height:3px;border-radius:3px;back
 /* produk grid */
 #produkList{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;margin-top:14px}
 .prod{display:flex;flex-direction:column;gap:0;padding:12px;margin:0;border:1px solid var(--line);border-radius:20px;background:var(--sf);box-shadow:var(--sh)}
-.ico{width:100%;height:auto;aspect-ratio:4/3;flex:none;border-radius:14px;background:linear-gradient(145deg,var(--art1),var(--art2));border:0;display:grid;place-items:center;font-size:64px;overflow:hidden}.ico img{width:100%;height:100%;object-fit:cover}
+.ico{width:100%;height:auto;aspect-ratio:4/3;flex:none;border-radius:14px;background:linear-gradient(145deg,var(--art1),var(--art2));border:0;display:grid;place-items:center;font-size:64px;overflow:hidden}.ico img{width:100%;height:100%;object-fit:contain}
 .pb{flex:1;min-width:0;display:flex;flex-direction:column;padding:14px 6px 6px}
 .pb h3{margin:0;font-size:16px;font-weight:700;letter-spacing:-.01em}
 .pb p{margin:6px 0 10px;color:var(--mut);font-size:13.5px;flex:0 0 auto}
@@ -302,6 +302,7 @@ nav .wrap{gap:10px}
   #m-tos .tos-f,#m-legal .tos-f{padding:10px 20px 12px}
 }
 </style>
+<link rel="stylesheet" href="pembayaran.css">
 </head>
 <body class="loading">
 <nav><div class="wrap">
@@ -707,5 +708,6 @@ document.addEventListener('dragstart',e=>{const t=e.target;if(t instanceof Eleme
 initSiteContent();watchProduk();renderCart();{const tb=ls.get('tab',null);if(tb&&document.querySelector('[data-pane="'+tb+'"]'))showTab(tb)}
 </script>
 <script>(function(){var b=document.getElementById('themeBtn');if(!b)return;function set(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('tema',t)}catch(e){}b.setAttribute('aria-pressed',t==='dark')}b.setAttribute('aria-pressed',document.documentElement.getAttribute('data-theme')==='dark');b.addEventListener('click',function(){set(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')})})();</script>
+<script src="pembayaran.js" defer></script>
 </body>
 </html>
