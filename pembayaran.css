@@ -1,0 +1,40 @@
+/* ===== Foto produk: selalu utuh (tidak ter-crop), rasio kotak tetap 4:3 ===== */
+.ico{position:relative;isolation:isolate;aspect-ratio:4/3;width:100%;height:auto;overflow:hidden}
+.ico img{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+.ico.has-foto::before{content:'';position:absolute;inset:-14%;z-index:0;background:var(--foto) center/cover no-repeat;filter:blur(16px) saturate(1.15);opacity:.5}
+
+/* ===== Sheet pilih metode pembayaran ===== */
+#m-bayar>.in{max-width:520px}
+.pay-sum{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--soft);border:1px solid var(--soft2);border-radius:14px;padding:12px 14px;margin:6px 0 4px}
+.pay-sum:empty{display:none}
+.pay-sum span{min-width:0;overflow-wrap:anywhere;font-weight:600}
+.pay-sum b{flex:none;color:var(--gold);font-weight:800}
+.pay-sec{margin:18px 0 8px;font:700 12px 'Plus Jakarta Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.pay-note{margin:10px 0 0;min-height:20px;font-size:13px;color:var(--mut)}
+.pay-note.warn{color:var(--warn);font-weight:600}
+
+.pay-logo{flex:none;display:grid;place-items:center;width:72px;height:46px;padding:8px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.08);overflow:hidden}
+.pay-logo img{width:100%;height:100%;object-fit:contain;-webkit-user-drag:none;user-select:none}
+.pay-logo.fb{font:800 12px 'Plus Jakarta Sans',sans-serif;color:#444;text-align:center;line-height:1.1}
+.pay-tag{flex:none;font:700 11px 'Plus Jakarta Sans',sans-serif;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.pay-tag.ok{color:var(--ok);background:var(--okbg)}
+
+/* QRIS: aktif, jelas */
+button.pay-qris{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px;margin:0;border-radius:18px;background:var(--soft);color:var(--txt);border:2px solid var(--gold2);box-shadow:0 0 0 4px rgba(138,99,201,.14)}
+button.pay-qris:hover:not(:disabled){background:var(--soft2);box-shadow:0 0 0 4px rgba(138,99,201,.22)}
+.pay-qris .pay-logo{width:84px;height:54px}
+.pay-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.pay-txt b{font-size:16px;font-weight:800}
+.pay-txt small{color:var(--mut);font-size:12.5px;font-weight:500;line-height:1.4}
+
+/* E-wallet maintenance: abu-abu, tidak bisa dipilih */
+.pay-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.pay-mt{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 10px;border-radius:16px;background:var(--sf2);border:1px solid var(--line);filter:grayscale(1);opacity:.6;cursor:not-allowed;user-select:none;-webkit-user-select:none;text-align:center}
+.pay-mt .pay-logo{width:100%;height:46px}
+.pay-mt b{font-size:14px;font-weight:700;color:var(--txt)}
+.pay-mt .pay-tag{color:#6f6f6f;background:#dcdcdc}
+:root[data-theme="dark"] .pay-mt .pay-tag{color:#bbb;background:#444}
+.pay-mt:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+.pay-sheet-shake{animation:shk .4s ease}
+@media(max-width:380px){.pay-qris .pay-logo{width:68px;height:46px}.pay-tag{font-size:10px;padding:3px 8px}}
+@media(prefers-reduced-motion:reduce){.pay-sheet-shake{animation:none}}
