@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-XAZrWHBXFVoScs7VAVomAvmsNtZd31o5xkbnl6an83g=' 'sha256-sYxTVJoqwpaVsjEqbe47vdJGhwNurYUXILRyUTLKGjY=' 'sha256-4qtChmm94ADijGXJYJCLBHO6yJFl8ty8ELtZo3xX9Yw=' 'sha256-NBELIqDz1dqe9jTjpvvWcmiuDuiExbs34QqOjUK3d9Q=' https://www.gstatic.com/firebasejs/10.12.2/ https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src https://*.googleapis.com https://www.google.com; frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-XAZrWHBXFVoScs7VAVomAvmsNtZd31o5xkbnl6an83g=' 'sha256-sYxTVJoqwpaVsjEqbe47vdJGhwNurYUXILRyUTLKGjY=' 'sha256-O/8XL0qYfQAnGaWJmvWcZSgwqIr2VH4Yai5n50OzK9s=' 'sha256-NBELIqDz1dqe9jTjpvvWcmiuDuiExbs34QqOjUK3d9Q=' https://www.gstatic.com/firebasejs/10.12.2/ https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src https://*.googleapis.com https://www.google.com; frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(window.top!==window.self){try{window.top.location.replace(window.self.location.href)}catch(e){document.documentElement.style.display="none"}}try{var t=localStorage.getItem("tema");if(t!=="dark"&&t!=="light")t="light";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","light")}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -523,7 +523,7 @@ function watchProduk(){
 }
 
 /* ---------- keranjang & kode ---------- */
-function kode(id){const k=ls.get('kode',{});if(!k[id]){k[id]=(String(produk[id]?.prefix||'PAY').replace(/[^A-Za-z0-9]/g,'').slice(0,8).toUpperCase()||'PAY')+'-'+cari(6);ls.set('kode',k)}return k[id]}
+const kodeBaru=()=>'SPC-'+cari(8);
 /* ---------- animasi keranjang ---------- */
 function animKeranjang(btn){
   const cb=document.querySelector('.cartbtn'),n=$('#cartN');
@@ -562,14 +562,15 @@ function openQris(ids,harga=null,paketId=null,ses=null,baru=false){
   if(!ses){const map=ls.get('qris_map',{}),old=map[key];
     /* QRIS yang masih berjalan dipakai lagi: hitungan tidak diulang walau produk diklik ulang */
     if(old&&!baru&&Date.now()<old.mulai+LOAD+DUR)ses=old;
-    else{ses={ids,paketId,coId,mulai:Date.now()};map[key]=ses}
+    else{ses={ids,paketId,coId,mulai:Date.now(),kode:kodeBaru()};map[key]=ses}
     for(const k in map)if(map[k].mulai+LOAD+DUR+864e5<Date.now())delete map[k];
     ls.set('qris_map',map)}
+  if(!ses.kode){ses.kode=kodeBaru();const mp=ls.get('qris_map',{}),{lanjut:_l,...sv}=ses;mp[key]=sv;ls.set('qris_map',mp)}
   ls.set('qris_aktif',key);curPk=paketId;
   tot=(paketId&&PK[paketId])?(Number(PK[paketId].harga)||0):null;sel=ids;closeAll();$('#main').hidden=true;$('#qris').hidden=false;if(!ses.lanjut)scrollTo(0,0);
   $('#ringkas').innerHTML=ids.map(id=>`<div class="row"><span>${esc(produk[id].nama)}</span><span class="mono">${rp(produk[id].harga)}</span></div>`).join('')+`<hr style="border-color:var(--line)"><div class="row"><b>Total</b><b class="harga">${rp(tot??total(ids))}</b></div>`;
   const pk=paketId?PK[paketId]:null;$('#qrBox').innerHTML=pk&&pk.qris?qr(pk.qris,esc(pk.nama)+' · '+rp(pk.harga)):ids.map(id=>qr(produk[id].qris||SITE.qris_img,esc(produk[id].nama)+' · '+rp(produk[id].harga))).join('');
-  $('#kodeBox').innerHTML=ids.map(id=>`<div class="kode"><span>${esc(kode(id))}</span><button class="ghost" data-copy="${esc(kode(id))}">Salin</button></div>`).join('');
+  $('#kodeBox').innerHTML=`<div class="kode"><span>${esc(ses.kode)}</span><button class="ghost" data-copy="${esc(ses.kode)}">Salin</button></div>`;
   clearInterval(tm);clearTimeout(ld);
   const sec=$('#qrisSection'),lo=$('#payLoading'),paid=$('#qPaid');
   const el0=Math.max(0,Date.now()-ses.mulai),end=ses.mulai+LOAD+DUR;
@@ -578,7 +579,7 @@ function openQris(ids,harga=null,paketId=null,ses=null,baru=false){
     const tick=()=>{const t=Math.max(0,Math.ceil((end-Date.now())/1000)),el=$('#timer');
       el.classList.toggle('end',t<=0);
       el.textContent=t<=0?'Waktu habis':String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');
-      if(t<=0){clearInterval(tm);$('#qrBox').hidden=true;$('#qUlang').hidden=false;paid.disabled=true}};
+      if(t<=0){clearInterval(tm);$('#kodeBox').innerHTML='<div class="kode" style="border-color:var(--bad);color:var(--bad)"><span>Kode pembayaran expired</span></div>';$('#qrBox').hidden=true;$('#qUlang').hidden=false;paid.disabled=true}};
     tick();clearInterval(tm);tm=setInterval(tick,1000);
   };
   if(el0>=LOAD){tampil(false);return}
