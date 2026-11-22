@@ -15,6 +15,10 @@
     { id: 'isaku',     nama: 'iSaku',     logo: 'logo/isaku.svg',     status: 'maintenance' }
   ];
 
+  /* true  = klik Beli langsung masuk ke QRIS (sheet pilih metode dilewati)
+     false = tampilkan sheet pilih metode pembayaran dulu */
+  const LANGSUNG_QRIS = true;
+
   /* Tombol yang dicegat: Beli, Checkout (keranjang), Ambil paket, Ambil paket (promo) */
   const TARGET = 'button[data-buy],button[data-co],button[data-paket],button[data-bundle]';
   const ATTR = ['data-buy', 'data-co', 'data-paket', 'data-bundle'];
@@ -163,7 +167,7 @@
 
   /* Fase capture: berjalan sebelum handler klik milik index.html */
   document.addEventListener('click', (e) => {
-    if (allow) return;
+    if (allow || LANGSUNG_QRIS) return;
     const t = e.target instanceof Element ? e.target.closest(TARGET) : null;
     if (!t || t.disabled) return;
     if (document.documentElement.classList.contains('toslock')) return; /* popup S&K masih terkunci */
